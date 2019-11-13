@@ -3,6 +3,7 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
+import java.util.concurrent.CompletableFuture;
 
 import javax.swing.*;
 import java.util.*;
@@ -28,6 +29,11 @@ public class MoonBuggy {
 
         TextGraphics tg = screen.newTextGraphics();
         screen.startScreen();
+        CompletableFuture.runAsync(() -> {
+            while (true) {
+                jump(tg, screen, originalPos, jumpOne, jumpTwo);
+            }
+        });
         //Ground
         printFirstLayer(tg);
         printSecondLayer(tg, screen);
@@ -83,7 +89,7 @@ public class MoonBuggy {
 
     }
 
-    private static void carPos(TextGraphics tg, String[][] pos) throws InterruptedException {
+    private static void carPos(TextGraphics tg, String[][] pos){
         for (String[] part: pos
              ) {
             tg.putString(Integer.parseInt(part[1]), Integer.parseInt(part[2]), part[0]);
@@ -96,23 +102,54 @@ public class MoonBuggy {
             }
         }
     }
-    private static void jump(TextGraphics tg, Screen screen, String[][] oPos, String[][] JOPos, String[][] JTPos)
-            throws InterruptedException, IOException {
+    public static void jump(TextGraphics tg, Screen screen, String[][] oPos, String[][] JOPos, String[][] JTPos){
         MoonBuggy.clear(tg);
         MoonBuggy.carPos(tg, JOPos);
-        screen.refresh();
-        Thread.sleep(200);
+        try {
+            screen.refresh();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         MoonBuggy.clear(tg);
         MoonBuggy.carPos(tg, JTPos);
-        screen.refresh();
-        Thread.sleep(400);
+        try {
+            screen.refresh();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            Thread.sleep(400);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         MoonBuggy.clear(tg);
         MoonBuggy.carPos(tg, JOPos);
-        screen.refresh();
-        Thread.sleep(200);
+        try {
+            screen.refresh();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         MoonBuggy.clear(tg);
         MoonBuggy.carPos(tg, oPos);
-        screen.refresh();
-        Thread.sleep(200);
+        try {
+            screen.refresh();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }
