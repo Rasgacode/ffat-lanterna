@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="ffat-lanterna" />
+        <module name="MoonBuggy" />
       </profile>
     </annotationProcessing>
   </component>
