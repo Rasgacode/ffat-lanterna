@@ -100,7 +100,7 @@ public class MoonBuggy {
             for (int j = map.length - 1; j > 0; j--) {
                 map[j] = map[j - 1];
             }
-            if(map[map.length - 1] == " "){
+            if(map[map.length - 5] == " "){
                 scoreCounter += 1;
             }
             map[0] = ground[i];
@@ -124,6 +124,7 @@ public class MoonBuggy {
                     tg.putString(74, 18, "/");
                 }
             }
+            tg.putString(35,22, "Score: "+ scoreCounter);
             screen.refresh();
             crash(screen);
             if (keepRunning == false){
@@ -148,11 +149,11 @@ public class MoonBuggy {
     }
 
     private static void crash(Screen screen){
-        Character frontWheel = screen.getFrontCharacter(69,18).getCharacter();
-        Character rearWheel = screen.getFrontCharacter(73,18).getCharacter();
-        Character underFrontWheel = screen.getFrontCharacter(69,19).getCharacter();
-        Character underRearWheel = screen.getFrontCharacter(73,19).getCharacter();
-        if ((frontWheel == '(' && underFrontWheel == ' ') ||(rearWheel == '(' && underRearWheel == ' ')){
+        Character frontWheel = screen.getFrontCharacter(70,18).getCharacter();
+        Character rearWheel = screen.getFrontCharacter(74,18).getCharacter();
+        Character underFrontWheel = screen.getFrontCharacter(70,19).getCharacter();
+        Character underRearWheel = screen.getFrontCharacter(74,19).getCharacter();
+        if ((frontWheel !=' ' && underFrontWheel == ' ') ||(rearWheel !=' ' && underRearWheel == ' ')){
             keepRunning = false;
         }
     }
