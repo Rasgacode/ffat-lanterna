@@ -1,4 +1,5 @@
 import com.googlecode.lanterna.graphics.TextGraphics;
+import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
@@ -8,6 +9,7 @@ import java.util.concurrent.CompletableFuture;
 import javax.swing.*;
 import java.util.*;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.lang.reflect.Method;
 
 public class MoonBuggy {
@@ -31,7 +33,11 @@ public class MoonBuggy {
         screen.startScreen();
         CompletableFuture.runAsync(() -> {
             while (true) {
-                jump(tg, screen, originalPos, jumpOne, jumpTwo);
+                try {
+                    jump(tg, screen, originalPos, jumpOne, jumpTwo, terminal);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         //Ground
@@ -102,54 +108,81 @@ public class MoonBuggy {
             }
         }
     }
-    public static void jump(TextGraphics tg, Screen screen, String[][] oPos, String[][] JOPos, String[][] JTPos){
+    public static void jump(TextGraphics tg, Screen screen, String[][] oPos, String[][] JOPos, String[][] JTPos,
+                            Terminal terminal) throws IOException {
         MoonBuggy.clear(tg);
         MoonBuggy.carPos(tg, JOPos);
-        try {
-            screen.refresh();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        MoonBuggy.clear(tg);
-        MoonBuggy.carPos(tg, JTPos);
-        try {
-            screen.refresh();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            Thread.sleep(400);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        MoonBuggy.clear(tg);
-        MoonBuggy.carPos(tg, JOPos);
-        try {
-            screen.refresh();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        MoonBuggy.clear(tg);
-        MoonBuggy.carPos(tg, oPos);
-        try {
-            screen.refresh();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        boolean keepRunning = true;
+        while (keepRunning){
+            KeyStroke keyPressed = terminal.pollInput();
+            if(keyPressed != null){
+                switch (keyPressed.getKeyType()){
+                    case Escape:
+                        keepRunning = false;
+                        break;
+                    case ArrowUp:
+                        MoonBuggy.carPos(tg, oPos);
+                        try {
+                            screen.refresh();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            Thread.sleep(200);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        MoonBuggy.clear(tg);
+                        MoonBuggy.carPos(tg, JOPos);
+                        try {
+                            screen.refresh();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            Thread.sleep(200);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        MoonBuggy.clear(tg);
+                        MoonBuggy.carPos(tg, JTPos);
+                        try {
+                            screen.refresh();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            Thread.sleep(400);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        MoonBuggy.clear(tg);
+                        MoonBuggy.carPos(tg, JOPos);
+                        try {
+                            screen.refresh();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            Thread.sleep(200);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        MoonBuggy.clear(tg);
+                        MoonBuggy.carPos(tg, oPos);
+                        try {
+                            screen.refresh();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            Thread.sleep(200);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                }
+            }
         }
     }
 }
