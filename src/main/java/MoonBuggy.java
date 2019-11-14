@@ -1,5 +1,4 @@
 import com.googlecode.lanterna.graphics.TextGraphics;
-import com.googlecode.lanterna.gui2.AbstractTextGUI;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
@@ -14,19 +13,18 @@ public class MoonBuggy {
     static boolean jumpStatus = false;
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        String wheelStatus = "/";
 
-        String[][] originalPos = new String[][] {{"(", "69", "18"}, {wheelStatus, "70", "18"},{")", "71", "18"},
-                {"-", "72", "18"}, {"(", "73", "18"}, {wheelStatus, "74", "18"}, {")", "75", "18"},
+        String[][] originalPos = new String[][] {{"(", "69", "18"}, {"\\", "70", "18"},{")", "71", "18"},
+                {"-", "72", "18"}, {"(", "73", "18"}, {"\\", "74", "18"}, {")", "75", "18"},
                 {"O", "72", "17"}, {"m", "73", "17"}, {"m", "74", "17"}};
 
-        String[][] jumpOne = new String[][] {{"(", "69", "17"}, {wheelStatus, "70", "17"}, {")", "71", "17"},
-                {"-", "72", "17"}, {"(", "73", "17"}, {wheelStatus, "74", "17"}, {")", "75", "17"},
-                {"O", "72", "16"}, {"m", "73", "16"}, {"m", "74", "16"}};
+        String[][] jumpOne = new String[][] {{"(", "69", "17"}, {"|", "70", "17"}, {")", "71", "17"},
+                {"-", "72", "17"}, {"(", "73", "17"}, {"|", "74", "17"}, {")", "75", "17"},
+                {"O", "72", "16"}, {"M", "73", "16"}, {"m", "74", "16"}};
 
-        String[][] jumpTwo = new String[][] {{"(", "69", "16"}, {wheelStatus, "70", "16"}, {")", "71", "16"},
-                {"-", "72", "16"}, {"(", "73", "16"}, {wheelStatus, "74", "16"}, {")", "75", "16"},
-                {"O", "72", "15"}, {"m", "73", "15"}, {"m", "74", "15"}};
+        String[][] jumpTwo = new String[][] {{"(", "69", "16"}, {"\\", "70", "16"}, {")", "71", "16"},
+                {"-", "72", "16"}, {"(", "73", "16"}, {"\\", "74", "16"}, {")", "75", "16"},
+                {"o", "72", "15"}, {"m", "73", "15"}, {"m", "74", "15"}};
 
         Terminal terminal = new DefaultTerminalFactory().createTerminal();
         Screen screen = new TerminalScreen(terminal);
@@ -38,7 +36,7 @@ public class MoonBuggy {
         CompletableFuture.runAsync(() -> {
             MoonBuggy.clear(tg);
             MoonBuggy.carPos(tg, originalPos);
-            while (MoonBuggy.keepRunning) {
+            while (keepRunning) {
                 try {
                     KeyStroke keyPressed = terminal.readInput();
                     switch (keyPressed.getKeyType()) {
