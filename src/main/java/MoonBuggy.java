@@ -35,7 +35,7 @@ public class MoonBuggy {
             while (true) {
                 try {
                     jump(tg, screen, originalPos, jumpOne, jumpTwo, terminal);
-                } catch (IOException e) {
+                } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
                 }
             }
@@ -108,10 +108,10 @@ public class MoonBuggy {
             }
         }
     }
-    public static void jump(TextGraphics tg, Screen screen, String[][] oPos, String[][] JOPos, String[][] JTPos,
-                            Terminal terminal) throws IOException {
+    private static void jump(TextGraphics tg, Screen screen, String[][] oPos, String[][] JOPos, String[][] JTPos,
+                             Terminal terminal) throws IOException, InterruptedException {
         MoonBuggy.clear(tg);
-        MoonBuggy.carPos(tg, JOPos);
+        MoonBuggy.carPos(tg, oPos);
         boolean keepRunning = true;
         while (keepRunning){
             KeyStroke keyPressed = terminal.pollInput();
@@ -122,64 +122,24 @@ public class MoonBuggy {
                         break;
                     case ArrowUp:
                         MoonBuggy.carPos(tg, oPos);
-                        try {
-                            screen.refresh();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            Thread.sleep(200);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        screen.refresh();
+                        Thread.sleep(200);
                         MoonBuggy.clear(tg);
                         MoonBuggy.carPos(tg, JOPos);
-                        try {
-                            screen.refresh();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            Thread.sleep(200);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        screen.refresh();
+                        Thread.sleep(200);
                         MoonBuggy.clear(tg);
                         MoonBuggy.carPos(tg, JTPos);
-                        try {
-                            screen.refresh();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            Thread.sleep(400);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        screen.refresh();
+                        Thread.sleep(400);
                         MoonBuggy.clear(tg);
                         MoonBuggy.carPos(tg, JOPos);
-                        try {
-                            screen.refresh();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            Thread.sleep(200);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        screen.refresh();
+                        Thread.sleep(200);
                         MoonBuggy.clear(tg);
                         MoonBuggy.carPos(tg, oPos);
-                        try {
-                            screen.refresh();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            Thread.sleep(200);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        screen.refresh();
+                        Thread.sleep(200);
                         break;
                 }
             }
