@@ -1,5 +1,5 @@
+import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.graphics.TextGraphics;
-import com.googlecode.lanterna.gui2.AbstractTextGUI;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
@@ -11,6 +11,7 @@ import java.io.IOException;
 
 public class MoonBuggy {
     static boolean keepRunning = true;
+    static int scoreCounter = 0;
     static boolean jumpStatus = false;
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -38,7 +39,7 @@ public class MoonBuggy {
         CompletableFuture.runAsync(() -> {
             MoonBuggy.clear(tg);
             MoonBuggy.carPos(tg, originalPos);
-            while (MoonBuggy.keepRunning) {
+            while (keepRunning) {
                 try {
                     KeyStroke keyPressed = terminal.readInput();
                     switch (keyPressed.getKeyType()) {
@@ -59,7 +60,9 @@ public class MoonBuggy {
         //Ground
         printFirstLayer(tg);
         printSecondLayer(tg, screen);
-
+        if (keepRunning == false){
+            endGame(screen, tg);
+        }
 
         screen.refresh();
         screen.readInput();
@@ -75,12 +78,12 @@ public class MoonBuggy {
     private static void printSecondLayer(TextGraphics tg, Screen screen) throws IOException, InterruptedException {
         Random r = new Random();
         String[] ground = new String[1500];
-        int randomCounter = r.nextInt((17 - 8) + 1) + 8;
+        int randomCounter = r.nextInt((23 - 13) + 1) + 13;
 
         for (int i = 0; i < ground.length; i++) {
             if (i == randomCounter) {
                 ground[i] = " ";
-                randomCounter += r.nextInt((17 - 8) + 1) + 8;
+                randomCounter += r.nextInt((23 - 13) + 1) + 13;
             } else {
                 ground[i] = "#";
             }
@@ -89,7 +92,7 @@ public class MoonBuggy {
         for (int i = 0; i < map.length; i++) {
             if (i == randomCounter && i > 20) {
                 map[i] = " ";
-                randomCounter += r.nextInt((17 - 8) + 1) + 8;
+                randomCounter += r.nextInt((23 - 13) + 1) + 13;
             } else {
                 map[i] = "#";
             }
@@ -97,6 +100,9 @@ public class MoonBuggy {
         for (int i = 0; i < ground.length - 81; i++) {
             for (int j = map.length - 1; j > 0; j--) {
                 map[j] = map[j - 1];
+            }
+            if(map[map.length - 1] == " "){
+                scoreCounter += 1;
             }
             map[0] = ground[i];
             int k = 0;
@@ -120,10 +126,36 @@ public class MoonBuggy {
                 }
             }
             screen.refresh();
+            crash(screen);
+            if (keepRunning == false){
+                break;
+            }
             Thread.sleep(100);
 
         }
 
+    }
+
+    private static void endGame(Screen screen, TextGraphics tg) throws IOException {
+        screen.clear();
+        tg.putString(5,6," ██████╗  █████╗ ███╗   ███╗███████╗     ██████╗ ██╗   ██╗███████╗██████╗");
+        tg.putString(5,7,"██╔════╝ ██╔══██╗████╗ ████║██╔════╝    ██╔═══██╗██║   ██║██╔════╝██╔══██╗");
+        tg.putString(5,8,"██║  ███╗███████║██╔████╔██║█████╗      ██║   ██║██║   ██║█████╗  ██████╔╝");
+        tg.putString(5,9,"██║   ██║██╔══██║██║╚██╔╝██║██╔══╝      ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗");
+        tg.putString(5,10,"╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║");
+        tg.putString(5,11," ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝");
+        tg.putString(35, 15,"Your score: " + scoreCounter);
+        screen.refresh();
+    }
+
+    private static void crash(Screen screen){
+        Character frontWheel = screen.getFrontCharacter(69,18).getCharacter();
+        Character rearWheel = screen.getFrontCharacter(73,18).getCharacter();
+        Character underFrontWheel = screen.getFrontCharacter(69,19).getCharacter();
+        Character underRearWheel = screen.getFrontCharacter(73,19).getCharacter();
+        if ((frontWheel == '(' && underFrontWheel == ' ') ||(rearWheel == '(' && underRearWheel == ' ')){
+            keepRunning = false;
+        }
     }
 
     private static void carPos(TextGraphics tg, String[][] pos){
