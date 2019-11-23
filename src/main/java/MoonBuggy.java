@@ -33,7 +33,6 @@ public class MoonBuggy {
 
         TextGraphics tg = screen.newTextGraphics();
         screen.startScreen();
-
         // Car (jump)
         CompletableFuture.runAsync(() -> {
             MoonBuggy.clear(tg);
@@ -68,12 +67,25 @@ public class MoonBuggy {
         screen.stopScreen();
     }
 
+    /**
+     * Prints out the first layer of the ground.
+     *
+     * @param tg Text Graphics modification
+     */
     private static void printFirstLayer(TextGraphics tg) {
         for (int i = 0; i < 80; i++) {
             tg.putString(i, 20, "#");
         }
     }
 
+    /**
+     * Prints out the second layer of the ground.
+     *
+     * @param tg    Text Graphics modification
+     * @param screen The given terminal screen
+     * @throws IOException
+     * @throws InterruptedException
+     */
     private static void printSecondLayer(TextGraphics tg, Screen screen) throws IOException, InterruptedException {
         Random r = new Random();
         String[] ground = new String[1500];
@@ -136,6 +148,13 @@ public class MoonBuggy {
 
     }
 
+    /**
+     * Prints out Game Over to the terminal.
+     *
+     * @param screen The given terminal screen
+     * @param tg    Text Graphics modification
+     * @throws IOException
+     */
     private static void endGame(Screen screen, TextGraphics tg) throws IOException {
         screen.clear();
         tg.putString(5,6," ██████╗  █████╗ ███╗   ███╗███████╗     ██████╗ ██╗   ██╗███████╗██████╗");
@@ -148,6 +167,11 @@ public class MoonBuggy {
         screen.refresh();
     }
 
+    /**
+     * The game ends on car crash.
+     *
+     * @param screen   The given terminal screen
+     */
     private static void crash(Screen screen){
         Character frontWheel = screen.getFrontCharacter(70,18).getCharacter();
         Character rearWheel = screen.getFrontCharacter(74,18).getCharacter();
@@ -158,12 +182,24 @@ public class MoonBuggy {
         }
     }
 
+    /**
+     * Prints the car at given position.
+     *
+     * @param tg Text Graphics modification
+     * @param pos Position of the car for ex.: oPos(Original position)
+     */
     private static void carPos(TextGraphics tg, String[][] pos){
         for (String[] part: pos
              ) {
             tg.putString(Integer.parseInt(part[1]), Integer.parseInt(part[2]), part[0]);
         }
     }
+
+    /**
+     * Clears the car(Helps at car jump animation).
+     *
+     * @param tg Text Graphics modification
+     */
     private static void clear(TextGraphics tg) {
         for (int i = 15; i < 19; i++) {
             for (int j = 69; j < 76; j++) {
@@ -171,6 +207,18 @@ public class MoonBuggy {
             }
         }
     }
+
+    /**
+     * Animates the jump of the car.
+     *
+     * @param tg Text Graphics modification
+     * @param screen The given terminal screen
+     * @param oPos Original position of the car
+     * @param JOPos The first position of the car after jump
+     * @param JTPos The highest position of the car after jump
+     * @throws IOException
+     * @throws InterruptedException
+     */
     private static void jump(TextGraphics tg, Screen screen, String[][] oPos, String[][] JOPos, String[][] JTPos
                              ) throws IOException, InterruptedException{
         MoonBuggy.carPos(tg, oPos);
